@@ -1,25 +1,43 @@
-// an array with all of our cart items
 var cart = [];
 
 var updateCart = function () {
-  // TODO: finish
+  $('.cart-list').empty();
+  $('.total').html('0');
+
+  for (var i = 0; i < cart.length; i ++) {
+    var template = Handlebars.compile($('#item-template').html())
+    var newItem = template(cart[i]);
+
+    $('.cart-list').append(newItem);
+    $('.total').html(calculateTotal());
+  }
 }
 
+var calculateTotal = function () {
+  var total = 0;
+
+  for (var i = 0; i < cart.length; i ++) {
+    total += cart[i].price;
+  }
+
+  return total;
+}
 
 var addItem = function (item) {
-  // TODO: finish
+  cart.push(item);
 }
 
 var clearCart = function () {
-  // TODO: finish
+  cart = [];
+  updateCart();
 }
 
 $('.view-cart').on('click', function () {
-  // TODO: hide/show the shopping cart!
+  $('.shopping-cart').toggleClass('show');
 });
 
 $('.add-to-cart').on('click', function () {
-  // TODO: get the "item" object from the page
+  var item = $(this).closest('.item').data();
   addItem(item);
   updateCart();
 });
@@ -28,5 +46,4 @@ $('.clear-cart').on('click', function () {
   clearCart();
 });
 
-// update the cart as soon as the page loads!
 updateCart();
